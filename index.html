@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UAP Pemrograman Web</title>
+</head>
+<body>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Kode</th>
+                <th>Barang</th>
+                <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody id="things"></tbody>
+    </table>
+
+    <h1>Inputan User</h1>
+
+    <table border="1">
+        <tr>
+            <td>Masukan Kode</td>
+            <td>:</td>
+            <td><input type="text" name="code"></td>
+        </tr>
+        <tr>
+            <td>Banyaknya Barang</td>
+            <td>:</td>
+            <td><input type="text" name="qty"></td>
+        </tr>
+        <tr>
+            <td colspan="3"><button type="submit" id="count-price">Submit</button></td>
+        </tr>
+    </table>
+    <script>
+        const data = [
+            {
+                code: '001',
+                name: 'Barang A',
+                price: 10000,
+            },
+            {
+                code: '002',
+                name: 'Barang B',
+                price: 20000,
+            },
+            {
+                code: '003',
+                name: 'Barang C',
+                price: 30000,
+            },
+        ];
+
+        const tableBody = document.querySelector('tbody[id=things]');
+
+        data.forEach(function (d) {
+            const row = tableBody.insertRow();
+            row.insertCell().innerText = d.code;
+            row.insertCell().innerText = d.name;
+            row.insertCell().innerText = d.price.toString();
+        });
+
+        const countButton = document.querySelector('button[id=count-price]');
+        countButton.addEventListener('click', function () {
+            const code = document.querySelector('input[name=code]');
+            const qty = document.querySelector('input[name=qty]');
+
+            if (code.value === '' || qty.value === '') {
+                alert('Kode barang atau Jumlahnya tidak boleh kosong!');
+                return;
+            }
+                
+            const thing = data.filter(d => d.code === code.value);
+            
+            if (thing.length === 0) {
+                alert('Kode barang tidak ada!');
+                return;
+            }
+
+            const total = parseInt(qty.value) * thing[0].price;
+            alert('Total pembayaran adalah: ' + total);
+            const money = prompt('Masukan uang anda:');
+
+            if (parseInt(money) < total) {
+                alert('Uang anda tidak cukup!');
+                return;
+            }
+
+            const back = parseInt(money) - total;
+
+            alert('Total kembalian anda adalah: ' + back);
+            code.value = ''
+            qty.value = ''
+        });
+    </script>
+</body>
+</html>
